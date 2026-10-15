@@ -1,18 +1,20 @@
+![WasteWise-AI Cover](docs/images/wastewise-cover.png)
+
+<div align="center">
+
 # WasteWise-AI
 
 ### AI-Powered Smart Waste Classification and Intelligent Recycling System Using Deep Learning (CNN)
 
-[![Python 3.11](https://img.shields.io/badge/Python-3.11.9-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16.2-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-5.4.11-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.15-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Backend Tests](https://img.shields.io/badge/Backend_Tests-24_Passed-brightgreen?logo=pytest&logoColor=white)](#testing)
-[![Frontend Tests](https://img.shields.io/badge/Frontend_Tests-12_Passed-brightgreen?logo=vitest&logoColor=white)](#testing)
-[![License](https://img.shields.io/badge/License-Unspecified-lightgrey)](#license)
+*Empowering automated waste sorting and contamination reduction through real-time computer vision and intelligent disposal guidance.*
 
-**WasteWise-AI** is an end-to-end computer vision and intelligent recycling web application engineered to automate household and municipal waste sorting. Powered by a custom Convolutional Neural Network (CNN) trained with a controlled square-root damped class-weighting schedule, WasteWise-AI classifies visual imagery into six waste streams—**cardboard**, **glass**, **metal**, **paper**, **plastic**, and **trash**—and translates predictions into actionable, material-specific preparation instructions and bin recommendations.
+[![Python 3.11](https://img.shields.io/badge/Python-3.11.9-3776AB?logo=python&logoColor=white)](https://www.python.org/) [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16.2-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/) [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/) [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/) [![Vite](https://img.shields.io/badge/Vite-5.4.11-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.15-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/) [![Backend Tests](https://img.shields.io/badge/Backend_Tests-24_Passed-brightgreen?logo=pytest&logoColor=white)](#testing) [![Frontend Tests](https://img.shields.io/badge/Frontend_Tests-12_Passed-brightgreen?logo=vitest&logoColor=white)](#testing) [![License](https://img.shields.io/badge/License-Unspecified-lightgrey)](#license)
+
+<p align="center">
+  <strong>WasteWise-AI</strong> is an end-to-end computer vision and intelligent recycling web application engineered to automate household and municipal waste sorting. Powered by a custom Convolutional Neural Network (CNN) trained with a controlled square-root damped class-weighting schedule, WasteWise-AI classifies visual imagery into six waste streams—<strong>cardboard</strong>, <strong>glass</strong>, <strong>metal</strong>, <strong>paper</strong>, <strong>plastic</strong>, and <strong>trash</strong>—and translates predictions into actionable, material-specific preparation instructions and bin recommendations.
+</p>
+
+</div>
 
 ---
 
