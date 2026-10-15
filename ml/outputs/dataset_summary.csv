@@ -1,0 +1,8 @@
+class_name,folder_exists,total_files,valid_images,corrupted_images,unsupported_files,percentage,min_dimension,max_dimension,most_common_dimension,color_modes,formats
+cardboard,True,403,403,0,0,15.95%,512x384,512x384,512x384,RGB:403,JPEG:403
+glass,True,501,501,0,0,19.83%,512x384,512x384,512x384,RGB:501,JPEG:501
+metal,True,410,410,0,0,16.22%,512x384,512x384,512x384,RGB:410,JPEG:410
+paper,True,594,594,0,0,23.51%,512x384,512x384,512x384,RGB:594,JPEG:594
+plastic,True,482,482,0,0,19.07%,512x384,512x384,512x384,RGB:482,JPEG:482
+trash,True,137,137,0,0,5.42%,512x384,512x384,512x384,RGB:137,JPEG:137
+TOTAL,True,2527,2527,0,0,100.00%,512x384,512x384,512x384,RGB:2527,JPEG:2527

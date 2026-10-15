@@ -1,0 +1,112 @@
+# ==============================================================================
+# WasteWise-AI .gitignore
+# ==============================================================================
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook Checkpoints & Cache
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ML Datasets (Ignore raw/processed image datasets and archives, keep folder structure)
+ml/data/*
+!ml/data/.gitkeep
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ML Model Artifacts & Checkpoints
+*.h5
+*.keras
+*.tflite
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+ml/outputs/*
+!ml/outputs/.gitkeep
+!ml/outputs/*.csv
+!ml/outputs/*.json
+!ml/outputs/*.png
+
+# Logs, Visualizations, and Profiling
+*.log
+runs/
+wandb/
+.tensorboard/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Secrets and Environment Variables
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Frontend Artifacts (for future web app steps)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+*.tsbuildinfo
+.npm/
+
+# Operating System Specific Files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# IDE & Editor Settings (allow local personal configurations)
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~

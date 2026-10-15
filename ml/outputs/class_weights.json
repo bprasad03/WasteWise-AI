@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "description": "Balanced class weights computed on the WasteWise-AI training split",
+    "formula": "total_train_samples / (num_classes * class_samples)",
+    "total_train_samples": 1768,
+    "num_classes": 6,
+    "random_seed": 42
+  },
+  "class_mapping": {
+    "cardboard": 0,
+    "glass": 1,
+    "metal": 2,
+    "paper": 3,
+    "plastic": 4,
+    "trash": 5
+  },
+  "class_weights_by_id": {
+    "0": 1.0449,
+    "1": 0.8419,
+    "2": 1.0267,
+    "3": 0.7083,
+    "4": 0.8744,
+    "5": 3.0694
+  },
+  "class_weights_by_name": {
+    "cardboard": 1.0449,
+    "glass": 0.8419,
+    "metal": 1.0267,
+    "paper": 0.7083,
+    "plastic": 0.8744,
+    "trash": 3.0694
+  },
+  "train_samples_per_class": {
+    "cardboard": 282,
+    "glass": 350,
+    "metal": 287,
+    "paper": 416,
+    "plastic": 337,
+    "trash": 96
+  }
+}

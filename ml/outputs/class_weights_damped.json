@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "description": "Square-root dampened class weights for WasteWise-AI controlled experiment",
+    "formula": "C * (1 / sqrt(N_k)) / sum(1 / sqrt(N_j))",
+    "total_train_samples": 1768,
+    "num_classes": 6,
+    "random_seed": 42,
+    "rationale": "Dampens linear inverse-frequency penalty on minority class (trash) to reduce false positives and improve precision, while preserving sensitivity."
+  },
+  "class_mapping": {
+    "cardboard": 0,
+    "glass": 1,
+    "metal": 2,
+    "paper": 3,
+    "plastic": 4,
+    "trash": 5
+  },
+  "class_weights_by_id": {
+    "0": 0.9462,
+    "1": 0.8494,
+    "2": 0.938,
+    "3": 0.7791,
+    "4": 0.8656,
+    "5": 1.6218
+  },
+  "class_weights_by_name": {
+    "cardboard": 0.9462,
+    "glass": 0.8494,
+    "metal": 0.938,
+    "paper": 0.7791,
+    "plastic": 0.8656,
+    "trash": 1.6218
+  },
+  "train_samples_per_class": {
+    "cardboard": 282,
+    "glass": 350,
+    "metal": 287,
+    "paper": 416,
+    "plastic": 337,
+    "trash": 96
+  }
+}

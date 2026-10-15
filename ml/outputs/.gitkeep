@@ -1,0 +1,1 @@
+# Keeps the ml/outputs directory tracked in Git while model weights and checkpoints are ignored.

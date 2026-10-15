@@ -1,0 +1,104 @@
+{
+  "test_loss": 0.8118,
+  "test_accuracy": 0.7158,
+  "macro_avg": {
+    "precision": 0.6927964303338182,
+    "recall": 0.7161568874662655,
+    "f1-score": 0.699233768164404,
+    "support": 380.0
+  },
+  "weighted_avg": {
+    "precision": 0.7244844272150511,
+    "recall": 0.7157894736842105,
+    "f1-score": 0.7164098949861043,
+    "support": 380.0
+  },
+  "per_class": {
+    "cardboard": {
+      "precision": 0.803,
+      "recall": 0.8833,
+      "f1_score": 0.8413,
+      "support": 60
+    },
+    "glass": {
+      "precision": 0.7627,
+      "recall": 0.5921,
+      "f1_score": 0.6667,
+      "support": 76
+    },
+    "metal": {
+      "precision": 0.6029,
+      "recall": 0.6613,
+      "f1_score": 0.6308,
+      "support": 62
+    },
+    "paper": {
+      "precision": 0.8214,
+      "recall": 0.7753,
+      "f1_score": 0.7977,
+      "support": 89
+    },
+    "plastic": {
+      "precision": 0.6667,
+      "recall": 0.6849,
+      "f1_score": 0.6757,
+      "support": 73
+    },
+    "trash": {
+      "precision": 0.5,
+      "recall": 0.7,
+      "f1_score": 0.5833,
+      "support": 20
+    }
+  },
+  "confusion_matrix": [
+    [
+      53,
+      0,
+      2,
+      3,
+      2,
+      0
+    ],
+    [
+      5,
+      45,
+      9,
+      3,
+      13,
+      1
+    ],
+    [
+      1,
+      7,
+      41,
+      3,
+      4,
+      6
+    ],
+    [
+      2,
+      1,
+      7,
+      69,
+      6,
+      4
+    ],
+    [
+      4,
+      5,
+      7,
+      4,
+      50,
+      3
+    ],
+    [
+      1,
+      1,
+      2,
+      2,
+      0,
+      14
+    ]
+  ]
+}
