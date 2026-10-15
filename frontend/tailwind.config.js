@@ -30,6 +30,11 @@ export default {
         },
       },
       fontFamily: {
+        pixel: [
+          '"Pixelify Sans"',
+          'ui-monospace',
+          'monospace',
+        ],
         sans: [
           'Inter',
           '-apple-system',
@@ -49,6 +54,9 @@ export default {
       },
       boxShadow: {
         'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+        'pixel-sm': '0 2px 0 0 #bbf7d0',
+        'pixel-card': '0 2px 0 0 #a7f3d0, 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+        'pixel-btn': '0 4px 0 0 #15803d',
         'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
         'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04)',
       },

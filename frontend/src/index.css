@@ -8,8 +8,8 @@
   }
 
   body {
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: #f4f8f5;
+    color: #0f1d33;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
@@ -21,25 +21,50 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #edf7f0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #c3e6d2;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #86efac;
 }
 
-/* Clean glassmorphism & subtle border accents */
-.modern-card {
+/* Pixel Art UI Cards & Buttons */
+.pixel-card {
   background-color: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  border: 1.5px solid #bbf7d0;
+  border-radius: 1rem;
+  box-shadow: 0 2px 0 0 #bbf7d0, 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
-.modern-card:hover {
-  border-color: rgba(203, 213, 225, 0.9);
+.pixel-card:hover {
+  border-color: #86efac;
 }
+
+.pixel-btn-primary {
+  background-color: #16a34a;
+  border: 2px solid #14532d;
+  color: #ffffff;
+  box-shadow: 0 4px 0 0 #14532d;
+  transition: all 0.1s ease;
+}
+
+.pixel-btn-primary:hover:not(:disabled) {
+  background-color: #15803d;
+}
+
+.pixel-btn-primary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 #14532d;
+}
+
+/* Image pixelated crisp rendering */
+.pixel-crisp {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+

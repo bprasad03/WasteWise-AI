@@ -3,193 +3,278 @@ import {
   CheckCircle2,
   AlertTriangle,
   Info,
-  ListChecks,
+  Recycle,
+  Package,
+  Trash2,
   Sparkles,
+  BarChart3,
+  Lightbulb,
 } from 'lucide-react';
 import { RECYCLING_BINS_DATA } from './RecyclingBins';
 
-export default function ClassificationResult({ result }) {
-  if (!result) return null;
+/**
+ * Center Column: Prediction Result Card matching reference image
+ */
+export function PredictionResultCard({ result, previewUrl }) {
+  if (!result) {
+    // Standby empty state matching reference card proportions
+    return (
+      <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] h-full flex flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-7 h-7 rounded-md bg-[#22c55e] border border-[#15803d] flex items-center justify-center text-white shrink-0 shadow-2xs">
+              <BarChart3 className="w-4 h-4" />
+            </div>
+            <h2 className="text-lg font-bold font-pixel text-[#0f172a] leading-tight">
+              Prediction Result
+            </h2>
+          </div>
+
+          <div className="text-center py-12 px-4 rounded-xl border border-dashed border-[#bbf7d0] bg-[#f0fdf4]/40">
+            <div className="w-12 h-12 rounded-xl bg-white border border-[#bbf7d0] text-[#16a34a] flex items-center justify-center mx-auto mb-3 shadow-2xs">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <p className="font-pixel text-sm font-bold text-[#0f172a]">
+              Awaiting Classification
+            </p>
+            <p className="text-xs text-slate-500 font-sans mt-1 max-w-xs mx-auto">
+              Select or drop an image and click <strong className="text-[#16a34a]">Classify Waste</strong> to view CNN class probabilities.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 pt-3 border-t border-[#d1fae5] text-[11px] text-slate-400 font-sans flex items-center gap-1.5">
+          <Info className="w-3.5 h-3.5 text-[#16a34a] shrink-0" />
+          <span>Softmax probability distribution across 6 waste categories.</span>
+        </div>
+      </div>
+    );
+  }
 
   const {
     predicted_class,
     confidence,
     probabilities = [],
     guidance,
-    filename,
   } = result;
 
   const confidencePercent = (confidence * 100).toFixed(1);
   const isLowConfidence = confidence < 0.6;
 
-  // Find matching visual styling for predicted class
   const binStyle =
     RECYCLING_BINS_DATA.find((b) => b.id === predicted_class?.toLowerCase()) ||
-    RECYCLING_BINS_DATA[5]; // fallback to trash
+    RECYCLING_BINS_DATA[5];
+
+  // Sort probabilities with top class first or ordered matching reference
+  const sortedProbabilities = [...probabilities].sort((a, b) => {
+    // Put top predicted class first, then descending probability
+    if (a.class_name.toLowerCase() === predicted_class?.toLowerCase()) return -1;
+    if (b.class_name.toLowerCase() === predicted_class?.toLowerCase()) return 1;
+    return b.probability - a.probability;
+  });
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xs border border-slate-200/90 space-y-5 sm:space-y-6">
-      {/* Header with predicted category & confidence */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
-        <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            CNN Inference Classification
-          </span>
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold capitalize text-slate-900 tracking-tight">
-              {predicted_class}
-            </h2>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-bold border shadow-2xs ${binStyle.badgeBg}`}
-            >
-              {guidance?.bin_name || `${predicted_class} stream`}
-            </span>
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] h-full flex flex-col justify-between">
+      <div>
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-7 h-7 rounded-md bg-[#22c55e] border border-[#15803d] flex items-center justify-center text-white shrink-0 shadow-2xs">
+            <BarChart3 className="w-4 h-4" />
           </div>
+          <h2 className="text-lg font-bold font-pixel text-[#0f172a] leading-tight">
+            Prediction Result
+          </h2>
         </div>
 
-        {/* Confidence meter badge with clear probability messaging */}
-        <div className="flex items-center gap-2.5 self-stretch sm:self-auto justify-between sm:justify-end bg-slate-50/90 px-3.5 py-2.5 rounded-xl border border-slate-200">
-          <div className="text-left sm:text-right">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-              Estimated Probability
+        {/* Top Result Banner matching reference */}
+        <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[#f8fafc] border border-slate-200/90 mb-4 shadow-2xs">
+          {/* Thumbnail preview */}
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-slate-200 border-2 border-white shadow-2xs shrink-0">
+            {previewUrl || result.thumbnailUrl ? (
+              <img
+                src={previewUrl || result.thumbnailUrl}
+                alt={predicted_class}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-slate-400">
+                <Package className="w-6 h-6" />
+              </div>
+            )}
+          </div>
+
+          {/* Predicted Category & Recommended Bin */}
+          <div className="min-w-0 flex-1">
+            <h3 className="font-pixel text-xl sm:text-2xl font-bold text-[#0f172a] capitalize leading-none truncate">
+              {predicted_class}
+            </h3>
+            <div className="mt-1">
+              <span className="inline-block text-[11px] font-sans font-semibold px-2.5 py-0.5 rounded-full bg-[#fef3c7] text-[#92400e] border border-[#fde68a] truncate max-w-full">
+                {guidance?.bin_name || `${predicted_class} Bin`}
+              </span>
             </div>
-            <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+          </div>
+
+          {/* Confidence Badge Pill matching reference */}
+          <div className="bg-[#ecfdf5] border border-[#a7f3d0] rounded-xl px-3 py-1.5 text-center shrink-0 shadow-2xs">
+            <div className="text-[10px] font-sans font-bold text-[#059669] uppercase tracking-wider">
+              Confidence
+            </div>
+            <div className="font-pixel text-xl sm:text-2xl font-bold text-[#16a34a] leading-none mt-0.5">
               {confidencePercent}%
             </div>
-            <div className="text-[10px] text-slate-400 font-medium">
-              Statistical model output
-            </div>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold text-xs shrink-0">
-            <Sparkles className="w-5 h-5 text-emerald-600" />
           </div>
         </div>
-      </div>
 
-      {/* Probability Disclaimer Note */}
-      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-600 text-xs flex items-start gap-2.5 leading-relaxed">
-        <Info className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-        <p>
-          <strong>Probability Notice:</strong> The confidence score is the model's estimated probability based on image patterns, <strong>not guaranteed correctness</strong>. Item condition, cleanliness, and local sorting rules determine actual recyclability.
-        </p>
-      </div>
-
-      {/* Caution Alert when confidence is below 60% */}
-      {isLowConfidence && (
-        <div className="p-4 rounded-xl bg-amber-50/90 border border-amber-300 text-amber-900 flex items-start gap-3 shadow-2xs">
-          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-          <div className="text-xs sm:text-sm space-y-1">
-            <div className="font-bold flex items-center gap-1.5">
-              <span>Notice: Moderate Confidence ({confidencePercent}%)</span>
-            </div>
-            <p className="text-amber-800 leading-relaxed text-xs">
-              The neural network detected visual ambiguity, mixed packaging materials, or multiple waste categories.
-              Predictions are provided solely as AI guidance and are <strong>never guaranteed</strong>. Please inspect the item packaging carefully before sorting.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Class Probabilities Distribution */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">
-            All 6 Category Probabilities
-          </h3>
-          <span className="text-[11px] text-slate-400">Softmax Distribution</span>
-        </div>
-
-        <div className="space-y-2.5">
-          {probabilities.map((item) => {
+        {/* Six Category Probability Bars matching reference */}
+        <div className="space-y-2 mt-4">
+          {sortedProbabilities.map((item) => {
             const pct = (item.probability * 100).toFixed(1);
             const isTop = item.class_name.toLowerCase() === predicted_class?.toLowerCase();
             const classBin = RECYCLING_BINS_DATA.find((b) => b.id === item.class_name.toLowerCase());
+            const dotColor = classBin?.accentColor || '#64748b';
 
             return (
-              <div key={item.class_id} className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full shrink-0"
-                      style={{ backgroundColor: classBin?.accentColor || '#64748b' }}
-                    />
-                    <span
-                      className={`capitalize truncate ${
-                        isTop ? 'font-bold text-slate-900' : 'font-medium text-slate-600'
-                      }`}
-                    >
-                      {item.class_name}
-                    </span>
-                    {isTop && (
-                      <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded whitespace-nowrap">
-                        Top Class
-                      </span>
-                    )}
-                  </div>
-                  <span className={`font-mono text-xs shrink-0 pl-2 ${isTop ? 'font-bold text-slate-900' : 'text-slate-500'}`}>
-                    {pct}%
+              <div key={item.class_id} className="flex items-center justify-between gap-3 text-xs">
+                {/* Dot + Class name */}
+                <div className="flex items-center gap-2 w-20 shrink-0">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{ backgroundColor: dotColor }}
+                  />
+                  <span
+                    className={`capitalize truncate ${
+                      isTop ? 'font-bold text-[#0f172a]' : 'font-medium text-slate-600'
+                    }`}
+                  >
+                    {item.class_name}
                   </span>
                 </div>
-                {/* Horizontal progress bar with smooth transition */}
-                <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+
+                {/* Progress bar */}
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
                       width: `${pct}%`,
-                      backgroundColor: isTop ? classBin?.accentColor || '#16a34a' : '#cbd5e1',
+                      backgroundColor: isTop ? dotColor : '#cbd5e1',
                     }}
                   />
                 </div>
+
+                {/* Percentage */}
+                <span className={`font-mono text-xs w-11 text-right shrink-0 ${isTop ? 'font-bold text-[#0f172a]' : 'text-slate-500'}`}>
+                  {pct}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Low Confidence Warning Notice */}
+        {isLowConfidence && (
+          <div className="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2 shadow-2xs">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <div className="leading-relaxed">
+              <span className="font-bold">Moderate Confidence ({confidencePercent}%): </span>
+              <span>Visual ambiguity detected. Estimated statistical output; please verify packaging labels manually.</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Footer notice */}
+      <div className="mt-4 pt-3 border-t border-[#d1fae5] text-[11px] text-slate-400 font-sans flex items-start gap-1.5">
+        <Info className="w-3.5 h-3.5 text-[#16a34a] shrink-0 mt-0.5" />
+        <span>Confidence is the model's estimated probability, not guaranteed correctness.</span>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Right Column: Recycling Guidance Card matching reference image
+ */
+export function RecyclingGuidanceCard({ guidance, predictedClass }) {
+  // Default instructions matching reference layout if no prediction yet
+  const defaultInstructions = [
+    { text: 'Keep it clean and dry', icon: CheckCircle2 },
+    { text: 'Remove plastic tape and labels', icon: Recycle },
+    { text: 'Flatten boxes to save space', icon: Package },
+    { text: 'Place in the paper & cardboard recycling bin', icon: Trash2 },
+  ];
+
+  const instructions = guidance?.instructions && guidance.instructions.length > 0
+    ? guidance.instructions.map((step, idx) => {
+        // Pick appropriate icon based on instruction wording
+        const lower = step.toLowerCase();
+        let Icon = CheckCircle2;
+        if (lower.includes('tape') || lower.includes('cap') || lower.includes('lid') || lower.includes('separate')) {
+          Icon = Recycle;
+        } else if (lower.includes('flatten') || lower.includes('box') || lower.includes('crush') || lower.includes('can')) {
+          Icon = Package;
+        } else if (lower.includes('bin') || lower.includes('landfill') || lower.includes('dispose') || lower.includes('bag')) {
+          Icon = Trash2;
+        }
+        return { text: step, icon: Icon };
+      })
+    : defaultInstructions;
+
+  return (
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] h-full flex flex-col justify-between">
+      <div>
+        {/* Header matching reference */}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-7 h-7 rounded-md bg-[#eab308] border border-[#ca8a04] flex items-center justify-center text-white shrink-0 shadow-2xs">
+            <Lightbulb className="w-4 h-4" />
+          </div>
+          <h2 className="text-lg font-bold font-pixel text-[#0f172a] leading-tight">
+            Recycling Guidance
+          </h2>
+        </div>
+
+        {/* 4 Clean Action Guidance Cards matching reference */}
+        <div className="space-y-2.5">
+          {instructions.slice(0, 4).map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={idx}
+                className="p-3 rounded-xl bg-[#f0fdf4]/70 border border-[#bbf7d0] flex items-center gap-3 text-xs sm:text-sm font-medium text-[#0f172a] shadow-2xs"
+              >
+                <div className="w-8 h-8 rounded-lg bg-white border border-[#bbf7d0] flex items-center justify-center text-[#16a34a] shrink-0 shadow-2xs">
+                  <Icon className="w-4 h-4 text-[#16a34a]" />
+                </div>
+                <span className="leading-snug">{item.text}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Structured Recycling Guidance Card */}
-      {guidance && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
-            <div>
-              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Recommended Disposal Stream
-              </div>
-              <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5">
-                {guidance.bin_name}
-              </h4>
-            </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 shadow-2xs self-start">
-              Color: {guidance.bin_color}
-            </span>
-          </div>
-
-          {/* Step-by-step preparation checklist */}
-          {guidance.instructions && guidance.instructions.length > 0 && (
-            <div>
-              <div className="text-xs font-bold text-slate-700 mb-2 flex items-center gap-1.5">
-                <ListChecks className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Preparation & Sorting Checklist:</span>
-              </div>
-              <ul className="space-y-1.5 text-xs sm:text-sm text-slate-700">
-                {guidance.instructions.map((step, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Municipal disclaimer notice */}
-          {guidance.disclaimer && (
-            <div className="pt-3 border-t border-slate-200 text-[11px] text-slate-500 flex items-start gap-2 leading-relaxed">
-              <Info className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-              <span>{guidance.disclaimer}</span>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Municipal Disclaimer at bottom */}
+      <div className="mt-4 pt-3 border-t border-[#d1fae5] text-[11px] text-slate-500 font-sans leading-relaxed">
+        <p>
+          <strong className="text-slate-700">Notice: </strong>
+          {guidance?.disclaimer ||
+            'Guidance only: Recycling rules, accepted items, and bin color coding vary by city and local contractor. Always check local municipal guidelines.'}
+        </p>
+      </div>
     </div>
   );
 }
+
+export default function ClassificationResult({ result, previewUrl }) {
+  if (!result) return null;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+      <PredictionResultCard result={result} previewUrl={previewUrl} />
+      <RecyclingGuidanceCard
+        guidance={result?.guidance}
+        predictedClass={result?.predicted_class}
+      />
+    </div>
+  );
+}
+

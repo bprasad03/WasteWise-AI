@@ -3,8 +3,6 @@ import {
   BarChart3,
   Recycle,
   Trash2,
-  AlertTriangle,
-  History,
   Clock,
   Sparkles,
 } from 'lucide-react';
@@ -22,12 +20,12 @@ function HistoryThumbnail({ item, binStyle }) {
   if (!src || hasError) {
     return (
       <div
-        className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border ${
+        className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border ${
           binStyle?.borderLight || 'border-slate-200'
         } ${binStyle?.bgLight || 'bg-slate-100'}`}
         title={`${item.predicted_class} stream`}
       >
-        <Icon className="w-4 h-4" style={{ color: binStyle?.accentColor || '#64748b' }} />
+        <Icon className="w-5 h-5" style={{ color: binStyle?.accentColor || '#64748b' }} />
       </div>
     );
   }
@@ -37,16 +35,16 @@ function HistoryThumbnail({ item, binStyle }) {
       src={src}
       alt={item.predicted_class || 'Scanned item'}
       onError={() => setHasError(true)}
-      className="w-10 h-10 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0"
+      className="w-11 h-11 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0"
       loading="lazy"
     />
   );
 }
 
-export default function SessionStats({
-  history = [],
-  onSelectHistoryItem = () => {},
-}) {
+/**
+ * Left Bottom Card: Session Activity
+ */
+export function SessionActivityCard({ history = [] }) {
   const totalScans = history.length;
   const recyclableCount = history.filter(
     (item) => item.predicted_class?.toLowerCase() !== 'trash'
@@ -54,86 +52,111 @@ export default function SessionStats({
   const trashCount = history.filter(
     (item) => item.predicted_class?.toLowerCase() === 'trash'
   ).length;
-  const lowConfidenceCount = history.filter(
-    (item) => item.confidence < 0.6
-  ).length;
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xs border border-slate-200/90 space-y-5 sm:space-y-6">
-      {/* Title & Clear Session Context */}
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] h-full flex flex-col justify-between">
       <div>
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-emerald-600 shrink-0" />
-            <span>Session Classification Activity</span>
-          </h2>
-          <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-            Client Session Only
-          </span>
-        </div>
-        <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-          Real-time browser session counts. <strong>Notice:</strong> These metrics reflect user interaction events in this browser session and do not constitute physical waste disposal or municipal audits.
-        </p>
-      </div>
-
-      {/* Modern Session Metric Stat Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
-        <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 shadow-2xs">
-          <div className="text-[11px] font-semibold text-slate-500">Total Scanned</div>
-          <div className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">{totalScans}</div>
-          <div className="text-[10px] text-slate-400 mt-0.5 truncate">Session queries</div>
-        </div>
-
-        <div className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200/70 shadow-2xs">
-          <div className="text-[11px] font-semibold text-emerald-800 flex items-center gap-1">
-            <Recycle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-            <span>Recyclable</span>
+        {/* Header matching reference */}
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md bg-[#22c55e] border border-[#15803d] flex items-center justify-center text-white shrink-0 shadow-2xs">
+              <BarChart3 className="w-4 h-4" />
+            </div>
+            <h2 className="text-lg font-bold font-pixel text-[#0f172a] leading-tight">
+              Session Activity
+            </h2>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-emerald-900 mt-0.5">{recyclableCount}</div>
-          <div className="text-[10px] text-emerald-700/80 mt-0.5 truncate">5 recyclable streams</div>
-        </div>
-
-        <div className="p-3.5 rounded-xl bg-slate-100/70 border border-slate-300/80 shadow-2xs">
-          <div className="text-[11px] font-semibold text-slate-700 flex items-center gap-1">
-            <Trash2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            <span>Trash Stream</span>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-slate-800 mt-0.5">{trashCount}</div>
-          <div className="text-[10px] text-slate-500 mt-0.5 truncate">General landfill</div>
-        </div>
-
-        <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/80 shadow-2xs">
-          <div className="text-[11px] font-semibold text-amber-800 flex items-center gap-1">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span>Low Confidence</span>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-amber-900 mt-0.5">{lowConfidenceCount}</div>
-          <div className="text-[10px] text-amber-700/80 mt-0.5 truncate">&lt; 60% probability</div>
-        </div>
-      </div>
-
-      {/* Recent Classifications History */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-            <History className="w-4 h-4 text-slate-500" />
-            <span>Recent Session History</span>
-          </h3>
-          <span className="text-[11px] text-slate-400">
-            {history.length > 0 ? `${history.length} item(s)` : 'No scans yet'}
+          <span className="text-xs text-slate-400 font-sans">
+            This Browser Session
           </span>
         </div>
 
+        {/* 3 Stat Boxes side-by-side matching reference image */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Scanned */}
+          <div className="p-3.5 rounded-xl bg-[#f0f9ff] border border-[#bae6fd] text-center shadow-2xs">
+            <div className="font-pixel text-2xl sm:text-3xl font-bold text-[#0284c7] leading-none">
+              {totalScans}
+            </div>
+            <div className="text-xs font-semibold text-[#0369a1] font-sans mt-1">
+              Scanned
+            </div>
+          </div>
+
+          {/* Recyclable */}
+          <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0] text-center shadow-2xs">
+            <div className="font-pixel text-2xl sm:text-3xl font-bold text-[#16a34a] leading-none">
+              {recyclableCount}
+            </div>
+            <div className="text-xs font-semibold text-[#15803d] font-sans mt-1">
+              Recyclable
+            </div>
+          </div>
+
+          {/* Trash */}
+          <div className="p-3.5 rounded-xl bg-[#fef2f2] border border-[#fecaca] text-center shadow-2xs">
+            <div className="font-pixel text-2xl sm:text-3xl font-bold text-[#dc2626] leading-none">
+              {trashCount}
+            </div>
+            <div className="text-xs font-semibold text-[#b91c1c] font-sans mt-1">
+              Trash
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 pt-3 border-t border-[#d1fae5] text-[11px] text-slate-400 font-sans leading-relaxed">
+        Client session counts only. Does not represent physical waste collection.
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Right Bottom Card: Recent Classification History
+ */
+export function RecentHistoryCard({
+  history = [],
+  onSelectHistoryItem = () => {},
+}) {
+  const [showAll, setShowAll] = useState(false);
+  const displayItems = showAll ? history : history.slice(0, 4);
+
+  return (
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] h-full flex flex-col justify-between">
+      <div>
+        {/* Header matching reference */}
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md bg-[#22c55e] border border-[#15803d] flex items-center justify-center text-white shrink-0 shadow-2xs">
+              <Clock className="w-4 h-4" />
+            </div>
+            <h2 className="text-lg font-bold font-pixel text-[#0f172a] leading-tight">
+              Recent Classification History
+            </h2>
+          </div>
+          {history.length > 4 && (
+            <button
+              type="button"
+              onClick={() => setShowAll(!showAll)}
+              className="text-xs font-sans px-2.5 py-1 rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+            >
+              {showAll ? 'Show Less' : 'View All'}
+            </button>
+          )}
+        </div>
+
+        {/* History items row matching reference */}
         {history.length === 0 ? (
-          <div className="text-center py-7 px-4 rounded-xl border border-dashed border-slate-200 bg-slate-50/50">
-            <Clock className="w-7 h-7 text-slate-300 mx-auto mb-1.5" />
-            <p className="text-xs text-slate-500 font-medium">
-              No items classified in this session yet. Upload a photo above to start!
+          <div className="text-center py-7 px-4 rounded-xl border border-dashed border-[#bbf7d0] bg-[#f0fdf4]/30">
+            <Clock className="w-6 h-6 text-slate-300 mx-auto mb-1" />
+            <p className="text-xs text-slate-500 font-sans">
+              No items classified yet in this session.
             </p>
           </div>
         ) : (
-          <div className="space-y-2 max-h-56 sm:max-h-60 overflow-y-auto pr-1">
-            {history.map((item, idx) => {
+          <div className="flex flex-wrap sm:flex-nowrap gap-3 overflow-x-auto pb-1">
+            {displayItems.map((item, idx) => {
               const binStyle =
                 RECYCLING_BINS_DATA.find(
                   (b) => b.id === item.predicted_class?.toLowerCase()
@@ -143,38 +166,53 @@ export default function SessionStats({
                 <div
                   key={idx}
                   onClick={() => onSelectHistoryItem(item)}
-                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors cursor-pointer group"
+                  className="bg-[#f8fafc] border border-slate-200/90 hover:border-[#86efac] rounded-xl p-2.5 flex items-center gap-2.5 shrink-0 min-w-[150px] sm:min-w-[170px] shadow-2xs transition-all cursor-pointer group"
                 >
-                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                    {/* Thumbnail preview with fallback */}
-                    <HistoryThumbnail item={item} binStyle={binStyle} />
+                  <HistoryThumbnail item={item} binStyle={binStyle} />
 
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-xs text-slate-900 capitalize truncate">
-                          {item.predicted_class}
-                        </span>
-                        <span
-                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${binStyle.badgeBg}`}
-                        >
-                          {(item.confidence * 100).toFixed(0)}%
-                        </span>
-                      </div>
-                      <div className="text-[11px] text-slate-400 truncate max-w-[160px] sm:max-w-[240px]">
-                        {item.filename || 'Uploaded image'}
-                      </div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-xs text-[#0f172a] capitalize truncate">
+                      {item.predicted_class}
+                    </div>
+                    <div className="mt-0.5">
+                      <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${binStyle.badgeBg}`}>
+                        {(item.confidence * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-sans mt-0.5">
+                      {item.timestamp || 'Just now'}
                     </div>
                   </div>
-
-                  <span className="text-[10px] text-slate-400 shrink-0 pl-2 whitespace-nowrap">
-                    {item.timestamp || 'Just now'}
-                  </span>
                 </div>
               );
             })}
           </div>
         )}
       </div>
+
+      <div className="mt-4 pt-3 border-t border-[#d1fae5] text-[11px] text-slate-400 font-sans">
+        Click any historical card to view its complete prediction breakdown.
+      </div>
     </div>
   );
 }
+
+export default function SessionStats({
+  history = [],
+  onSelectHistoryItem = () => {},
+}) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div className="lg:col-span-5">
+        <SessionActivityCard history={history} />
+      </div>
+      <div className="lg:col-span-7">
+        <RecentHistoryCard
+          history={history}
+          onSelectHistoryItem={onSelectHistoryItem}
+        />
+      </div>
+    </div>
+  );
+}
+

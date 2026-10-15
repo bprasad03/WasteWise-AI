@@ -4,11 +4,13 @@ import Header from './components/Header';
 import BackendStatusBanner from './components/BackendStatusBanner';
 import RecyclingBins from './components/RecyclingBins';
 import ImageUploader from './components/ImageUploader';
-import ClassificationResult from './components/ClassificationResult';
+import {
+  PredictionResultCard,
+  RecyclingGuidanceCard,
+} from './components/ClassificationResult';
 import SessionStats from './components/SessionStats';
 import { fetchHealth, predictWaste } from './services/api';
 import { createThumbnailDataUrl } from './utils/thumbnail';
-import { Sparkles, Shield, Compass } from 'lucide-react';
 
 export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -156,7 +158,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 overflow-x-hidden font-sans">
+    <div className="min-h-screen flex flex-col bg-[#f4f8f5] text-[#0f172a] overflow-x-hidden font-sans">
       {/* Top Header */}
       <Header
         backendStatus={backendStatus}
@@ -170,123 +172,131 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
-        {/* Modern Eco-Tech Hero Intro */}
-        <section className="bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-sm relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl space-y-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 backdrop-blur-xs">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              Deep Learning Waste Intelligence
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-sans leading-tight">
-              Automated Waste Sorting & Recycling Guidance
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
-              Upload everyday waste items to evaluate with our verified square-root damped Convolutional Neural Network. Get real-time class probability distributions and standardized municipal disposal guidelines.
-            </p>
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 space-y-6">
+        {/* Pixel Art Landscape Hero Banner matching reference image */}
+        <section className="relative rounded-2xl border-2 border-[#bbf7d0] shadow-[0_2px_0_0_#bbf7d0] overflow-hidden bg-gradient-to-b from-[#e6f7ff] via-[#edf9f2] to-[#def5e5] p-5 sm:p-7 lg:p-8">
+          {/* Pixel Art SVG Scenery Layer */}
+          <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+            <svg
+              className="w-full h-full"
+              preserveAspectRatio="none"
+              viewBox="0 0 1200 320"
+              style={{ shapeRendering: 'crispEdges' }}
+            >
+              {/* White Pixel Clouds in sky */}
+              <g fill="#ffffff" opacity="0.85">
+                <rect x="80" y="24" width="60" height="12" rx="2" />
+                <rect x="96" y="14" width="32" height="10" rx="2" />
+                <rect x="440" y="36" width="70" height="14" rx="2" />
+                <rect x="460" y="24" width="36" height="12" rx="2" />
+                <rect x="880" y="20" width="84" height="14" rx="2" />
+                <rect x="904" y="10" width="40" height="10" rx="2" />
+              </g>
+
+              {/* Distant Teal/Mint Skyline */}
+              <g fill="#a7d7c5" opacity="0.45">
+                <rect x="620" y="130" width="24" height="110" />
+                <rect x="628" y="110" width="8" height="20" />
+                <rect x="650" y="150" width="32" height="90" />
+                <rect x="690" y="125" width="26" height="115" />
+                <rect x="724" y="140" width="30" height="100" />
+                <rect x="760" y="115" width="28" height="125" />
+                <rect x="770" y="95" width="8" height="20" />
+                <rect x="796" y="145" width="24" height="95" />
+                <rect x="828" y="130" width="34" height="110" />
+              </g>
+
+              {/* Pixel Tree on Left Border */}
+              <g>
+                <rect x="8" y="190" width="10" height="60" fill="#78350f" />
+                <polygon points="13,110 38,160 -12,160" fill="#15803d" />
+                <polygon points="13,140 42,200 -16,200" fill="#16a34a" />
+                <polygon points="13,175 46,240 -20,240" fill="#22c55e" />
+              </g>
+
+              {/* Pixel Tree on Right Border */}
+              <g>
+                <rect x="1178" y="180" width="12" height="70" fill="#78350f" />
+                <circle cx="1184" cy="140" r="30" fill="#15803d" />
+                <circle cx="1165" cy="150" r="22" fill="#16a34a" />
+                <circle cx="1198" cy="150" r="20" fill="#22c55e" />
+              </g>
+
+              {/* Stepped Pixel Grass Hill at Bottom */}
+              <polygon points="0,270 1200,245 1200,320 0,320" fill="#22c55e" />
+              <polygon points="0,288 1200,265 1200,320 0,320" fill="#16a34a" />
+              <polygon points="0,305 1200,288 1200,320 0,320" fill="#15803d" />
+            </svg>
+          </div>
+
+          {/* Hero Content: Title on Left, Six Bins on Right */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            {/* Left Typography */}
+            <div className="lg:col-span-5 space-y-3">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-pixel text-[#0f172a] leading-tight tracking-wide">
+                Smarter Waste Sorting for a Cleaner Planet
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed max-w-md">
+                Upload an image and let our deep learning model identify the waste item and provide recycling guidance.
+              </p>
+            </div>
+
+            {/* Right: The Six Pixel Recycling Bins sitting on grass */}
+            <div className="lg:col-span-7 flex justify-center lg:justify-end">
+              <RecyclingBins
+                activeCategory={predictionResult?.predicted_class}
+                selectedBin={selectedBin}
+                onSelectBin={(id) => setSelectedBin(selectedBin === id ? null : id)}
+              />
+            </div>
           </div>
         </section>
 
-        {/* Six Clean Modern Recycling Bins */}
-        <section>
-          <RecyclingBins
-            activeCategory={predictionResult?.predicted_class}
-            selectedBin={selectedBin}
-            onSelectBin={(id) => setSelectedBin(selectedBin === id ? null : id)}
+        {/* Main 3-Column Classification Interface matching reference image */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Left Column: Upload Waste Item */}
+          <ImageUploader
+            selectedFile={selectedFile}
+            previewUrl={previewUrl}
+            onFileSelect={handleFileSelect}
+            onClear={handleClear}
+            onClassify={handleClassify}
+            isLoading={isLoading}
+            error={error}
+          />
+
+          {/* Center Column: Prediction Result */}
+          <PredictionResultCard
+            result={predictionResult}
+            previewUrl={previewUrl}
+          />
+
+          {/* Right Column: Recycling Guidance */}
+          <RecyclingGuidanceCard
+            guidance={predictionResult?.guidance}
+            predictedClass={predictionResult?.predicted_class}
           />
         </section>
 
-        {/* Dashboard 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
-          {/* Left Column: Uploader & Session Stats (7 cols on lg) */}
-          <div className="lg:col-span-7 space-y-6">
-            <ImageUploader
-              selectedFile={selectedFile}
-              previewUrl={previewUrl}
-              onFileSelect={handleFileSelect}
-              onClear={handleClear}
-              onClassify={handleClassify}
-              isLoading={isLoading}
-              error={error}
-            />
-
-            <SessionStats
-              history={history}
-              onSelectHistoryItem={handleSelectHistoryItem}
-            />
-          </div>
-
-          {/* Right Column: Prediction Results or Getting Started Guide (5 cols on lg, sticky on desktop) */}
-          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
-            {predictionResult ? (
-              <ClassificationResult result={predictionResult} />
-            ) : (
-              <div className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/90 space-y-5 text-slate-700">
-                <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold shrink-0">
-                    <Compass className="w-5 h-5 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-base text-slate-900">
-                      How WasteWise Works
-                    </h3>
-                    <p className="text-xs text-slate-500 font-medium">
-                      3 simple steps to smarter recycling
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-3.5 text-xs">
-                  <div className="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/60">
-                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                      1
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-900">Upload or Drop: </span>
-                      Select a clear photo of an empty bottle, tin can, cardboard box, paper, or plastic container.
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/60">
-                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                      2
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-900">Neural Inference: </span>
-                      Our custom regularized CNN decodes and resizes to 224&times;224, predicting category probability distribution.
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/60">
-                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                      3
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-900">Bin & Action Guidance: </span>
-                      The matching bin highlights automatically with actionable municipal preparation tips.
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-start gap-2">
-                  <Shield className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span className="leading-relaxed">
-                    Privacy protected: Uploaded images are evaluated in-memory only and are never saved to disk.
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        {/* Bottom Section: Session Activity & Recent Classification History */}
+        <section>
+          <SessionStats
+            history={history}
+            onSelectHistoryItem={handleSelectHistoryItem}
+          />
+        </section>
       </main>
 
-      {/* Clean Modern Footer */}
-      <footer className="mt-12 border-t border-slate-200 bg-white py-6">
+      {/* Clean Pixel-Art Footer */}
+      <footer className="mt-8 border-t border-[#d1fae5] bg-white py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <div>
-            <span className="font-bold text-slate-700">WasteWise-AI</span> &bull; Deep Learning Computer Vision CA1 Project
+          <div className="flex items-center gap-2">
+            <span className="font-pixel font-bold text-sm text-[#0f172a]">
+              WasteWise<span className="text-[#16a34a]">-AI</span>
+            </span>
+            <span>&bull; Deep Learning Computer Vision CA1 Project</span>
           </div>
-          <div className="text-center sm:text-right text-[11px] max-w-md">
+          <div className="text-center sm:text-right text-[11px] text-slate-400 max-w-md">
             Guidance notice: AI classifications provide general sorting assistance and are not legally binding guarantees of municipal recycling bylaws.
           </div>
         </div>
@@ -294,3 +304,4 @@ export default function App() {
     </div>
   );
 }
+
